@@ -15,9 +15,13 @@
 $(function() {
     $('.calendar').datepicker();
     console.log('datepicker running');
+    //disable historical dates
   });
 
-// have a spot when shows are showing to modify date/theater? 
+$('.go-button').on('click', function() {
+    $('.landingPg').remove();
+})
+
 
 // function watchForm() {
 //     $('form').submit(event => {
@@ -26,3 +30,6 @@ $(function() {
 //   }
   
 //   $(watchForm);
+
+
+  // have a spot when shows are showing to modify date/theater? 
