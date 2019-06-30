@@ -1,7 +1,7 @@
 'use strict';
 
 const amcApiKey = '451EB6B4-E2FD-412E-AF07-CA640853CDC3'; 
-const amcBaseURL = 'https://api.amctheatres.com';
+const amcBaseURL = 'https://cors-anywhere.herokuapp.com/https://api.amctheatres.com';
 // const amcTheatersSuggestions = '/v2/location-suggestions/?query=40206';
 // ex https://api.amctheatres.com/v2/location-suggestions/?query=40206
 // _embedded.suggestions.https://api.amctheatres.com/rels/v2/locations.href = link to query (with lat/long) which pulls up theaters
@@ -10,8 +10,6 @@ const amcBaseURL = 'https://api.amctheatres.com';
 // const amcMovies = '/v2/movies/{id}';
 const options = {
     headers: new Headers({
-    //   "Access-Control-Allow-Origin": 'https://api.amctheatres.com',
-    //   "Vary": 'Origin',
       "X-AMC-Vendor-Key": amcApiKey})
   };
 
@@ -41,8 +39,14 @@ function getSuggestions() {
 
   fetch(amcTheatersSuggestions, options)
     .then(response => response.json())
-    .then(responseJson => console.log(responseJson));
-    // console.log(responseJson._embedded.suggestions.https://api.amctheatres.com/rels/v2/locations.href)
+    .then(responseJson => {
+        console.log(responseJson)
+        console.log(responseJson._embedded.suggestions[0]._links['https://api.amctheatres.com/rels/v2/locations'].href)
+        let embeddedUrl = 'https://cors-anywhere.herokuapp.com/' + responseJson._embedded.suggestions[0]._links['https://api.amctheatres.com/rels/v2/locations'].href;
+        fetch (embeddedUrl, options)
+            .then(response => response.json())
+            .then(responseJson => console.log(responseJson))
+    });
 }
 
 //add this template to the above for an error message when ready
