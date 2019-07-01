@@ -25,7 +25,7 @@ function formatQueryParams(params) {
     return queryItems.join('&');
   }
 
-//JS for grabbing location suggestions
+//GET data from location-suggestions and embedded URL 
 
 function getSuggestions() {
     const inputZip = $('.js-zip').val();
@@ -45,9 +45,28 @@ function getSuggestions() {
         let embeddedUrl = 'https://cors-anywhere.herokuapp.com/' + responseJson._embedded.suggestions[0]._links['https://api.amctheatres.com/rels/v2/locations'].href;
         fetch (embeddedUrl, options)
             .then(response => response.json())
-            .then(responseJson => console.log(responseJson))
+            .then(responseJson => {
+                console.log(responseJson)
+                displayTheaterResults(responseJson)
+            })
     });
 }
+
+//display available theaters 
+function displayTheaterResults(responseJson) {
+    $('.theaterResults').empty();
+    for (let i = 0; i < responseJson._embedded.locations.length; i++){
+      $('.theaterResults').append( 
+        `<li>${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
+        <img src="${responseJson._embedded.locations[i]._embedded.theatre.media.theatreImageIcon}">
+         <p>Distance:${responseJson._embedded.locations[i].distance}miles</p>
+         <p>Address: ${responseJson._embedded.locations[i]._embedded.theatre.location.addressLine1}</p>
+         <p>${responseJson._embedded.locations[i]._embedded.theatre.location.city}, ${responseJson._embedded.locations[i]._embedded.theatre.location.state} ${responseJson._embedded.locations[i]._embedded.theatre.location.postalCode}</p>`  
+      )};
+      
+    // $('#results').removeClass('hidden');
+  };
+
 
 //add this template to the above for an error message when ready
 //   fetch(url)
