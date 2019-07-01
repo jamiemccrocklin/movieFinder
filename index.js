@@ -57,15 +57,35 @@ function displayTheaterResults(responseJson) {
     $('.theaterResults').empty();
     for (let i = 0; i < responseJson._embedded.locations.length; i++){
       $('.theaterResults').append( 
-        `<li>${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
-        <img src="${responseJson._embedded.locations[i]._embedded.theatre.media.theatreImageIcon}">
+        `<li class="index">${[i]}</li>
+         <li class="theaterNames">${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
+         <li class="theaterId hide">${responseJson._embedded.locations[i]._embedded.theatre.id}</li>
+         <img src="${responseJson._embedded.locations[i]._embedded.theatre.media.theatreImageIcon}">
          <p>Distance:${responseJson._embedded.locations[i].distance}miles</p>
          <p>Address: ${responseJson._embedded.locations[i]._embedded.theatre.location.addressLine1}</p>
-         <p>${responseJson._embedded.locations[i]._embedded.theatre.location.city}, ${responseJson._embedded.locations[i]._embedded.theatre.location.state} ${responseJson._embedded.locations[i]._embedded.theatre.location.postalCode}</p>`  
-      )};
-      
-    // $('#results').removeClass('hidden');
-  };
+         <p>${responseJson._embedded.locations[i]._embedded.theatre.location.city}, ${responseJson._embedded.locations[i]._embedded.theatre.location.state} ${responseJson._embedded.locations[i]._embedded.theatre.location.postalCode}</p>`)
+        };
+        // $('#results').removeClass('hidden');
+    };
+
+
+
+// on click of theater name, theater ID is logged
+$('.theaterResults').on('click', '.theaterNames', function() {
+    let selectedTheaterIndex = $(this).index()
+    let selectedTheaterHtml = $('.theaterId')[selectedTheaterIndex]
+    let selectedTheaterId = $(selectedTheaterHtml).text()
+    console.log(selectedTheaterIndex)
+    console.log(selectedTheaterHtml)
+    console.log(selectedTheaterId);
+})
+
+
+  //on click of theater name, display movies playing at that theater
+// function showMovies(theaterName) {
+    
+//     console.log(theaterName);
+// }
 
 
 //add this template to the above for an error message when ready
