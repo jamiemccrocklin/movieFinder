@@ -43,7 +43,7 @@ function getSuggestions() {
         console.log(responseJson)
         console.log(responseJson._embedded.suggestions[0]._links['https://api.amctheatres.com/rels/v2/locations'].href)
         let embeddedUrl = 'https://cors-anywhere.herokuapp.com/' + responseJson._embedded.suggestions[0]._links['https://api.amctheatres.com/rels/v2/locations'].href;
-        fetch (embeddedUrl, options)
+        fetch (embeddedUrl, options) 
             .then(response => response.json())
             .then(responseJson => {
                 console.log(responseJson)
@@ -57,10 +57,10 @@ function displayTheaterResults(responseJson) {
     $('.theaterResults').empty();
     for (let i = 0; i < responseJson._embedded.locations.length; i++){
       $('.theaterResults').append( 
-        `<li class="index">${[i]}</li>
-         <li class="theaterNames">${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
-         <li class="theaterId hide">${responseJson._embedded.locations[i]._embedded.theatre.id}</li>
-         <img src="${responseJson._embedded.locations[i]._embedded.theatre.media.theatreImageIcon}">
+        `<li class="theater-names">${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
+        <li data-theater-names = "${responseJson._embedded.locations[i]._embedded.theatre.longName}"
+         data-theater-id = "${responseJson._embedded.locations[i]._embedded.theatre.id}"</li>
+         <img alt="theater image icon" src="${responseJson._embedded.locations[i]._embedded.theatre.media.theatreImageIcon}">
          <p>Distance:${responseJson._embedded.locations[i].distance}miles</p>
          <p>Address: ${responseJson._embedded.locations[i]._embedded.theatre.location.addressLine1}</p>
          <p>${responseJson._embedded.locations[i]._embedded.theatre.location.city}, ${responseJson._embedded.locations[i]._embedded.theatre.location.state} ${responseJson._embedded.locations[i]._embedded.theatre.location.postalCode}</p>`)
@@ -71,13 +71,17 @@ function displayTheaterResults(responseJson) {
 
 
 // on click of theater name, theater ID is logged
-$('.theaterResults').on('click', '.theaterNames', function() {
-    let selectedTheaterIndex = $(this).index()
-    let selectedTheaterHtml = $('.theaterId')[selectedTheaterIndex]
-    let selectedTheaterId = $(selectedTheaterHtml).text()
-    console.log(selectedTheaterIndex)
-    console.log(selectedTheaterHtml)
-    console.log(selectedTheaterId);
+$('.theaterResults').on('click', '.theater-names', function(event) {
+    let x = document.getElementsByClassName('data-theater-names')
+    // let y = x.getAttribute('.data-theater-id')
+    console.log(x)
+    // console.log(y)
+    // let selectedTheaterIndex = $(this).index()
+    // let selectedTheaterHtml = $('.theaterId')[selectedTheaterIndex]
+    // let selectedTheaterId = $(selectedTheaterHtml).text()
+    // console.log(selectedTheaterIndex)
+    // console.log(selectedTheaterHtml)
+    // console.log(selectedTheaterId);
 })
 
 
