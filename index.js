@@ -58,8 +58,7 @@ function displayTheaterResults(responseJson) {
     for (let i = 0; i < responseJson._embedded.locations.length; i++){
       $('.theaterResults').append( 
         `<li class="theater-names">${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
-        <li class="data" data-theater-names = "${responseJson._embedded.locations[i]._embedded.theatre.longName}"
-         data-theater-id = "${responseJson._embedded.locations[i]._embedded.theatre.id}"</li>
+         <li class="theater-id">${responseJson._embedded.locations[i]._embedded.theatre.id}</li>
          <img alt="theater image icon" src="${responseJson._embedded.locations[i]._embedded.theatre.media.theatreImageIcon}">
          <p>Distance:${responseJson._embedded.locations[i].distance}miles</p>
          <p>Address: ${responseJson._embedded.locations[i]._embedded.theatre.location.addressLine1}</p>
