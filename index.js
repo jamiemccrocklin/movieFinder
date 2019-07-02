@@ -58,7 +58,7 @@ function displayTheaterResults(responseJson) {
     for (let i = 0; i < responseJson._embedded.locations.length; i++){
       $('.theaterResults').append( 
         `<li class="theater-names">${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
-        <li data-theater-names = "${responseJson._embedded.locations[i]._embedded.theatre.longName}"
+        <li class="data" data-theater-names = "${responseJson._embedded.locations[i]._embedded.theatre.longName}"
          data-theater-id = "${responseJson._embedded.locations[i]._embedded.theatre.id}"</li>
          <img alt="theater image icon" src="${responseJson._embedded.locations[i]._embedded.theatre.media.theatreImageIcon}">
          <p>Distance:${responseJson._embedded.locations[i].distance}miles</p>
@@ -71,17 +71,9 @@ function displayTheaterResults(responseJson) {
 
 
 // on click of theater name, theater ID is logged
-$('.theaterResults').on('click', '.theater-names', function(event) {
-    let x = document.getElementsByClassName('data-theater-names')
-    // let y = x.getAttribute('.data-theater-id')
+$('.theater-names').on('click', function(event) {
+    let x= document.getElementsByClassName('.data')
     console.log(x)
-    // console.log(y)
-    // let selectedTheaterIndex = $(this).index()
-    // let selectedTheaterHtml = $('.theaterId')[selectedTheaterIndex]
-    // let selectedTheaterId = $(selectedTheaterHtml).text()
-    // console.log(selectedTheaterIndex)
-    // console.log(selectedTheaterHtml)
-    // console.log(selectedTheaterId);
 })
 
 
