@@ -13,7 +13,6 @@ const options = {
       "X-AMC-Vendor-Key": amcApiKey})
   };
 
-
 // const for selected theater id
 // const for selected data
 // const for movie ID
@@ -57,23 +56,31 @@ function displayTheaterResults(responseJson) {
     $('.theaterResults').empty();
     for (let i = 0; i < responseJson._embedded.locations.length; i++){
       $('.theaterResults').append( 
-        `<li class="theater-names">${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
+        `<li class="theater-names" value=${responseJson._embedded.locations[i]._embedded.theatre.id}>${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
          <li class="theater-id">${responseJson._embedded.locations[i]._embedded.theatre.id}</li>
          <img alt="theater image icon" src="${responseJson._embedded.locations[i]._embedded.theatre.media.theatreImageIcon}">
          <p>Distance:${responseJson._embedded.locations[i].distance}miles</p>
          <p>Address: ${responseJson._embedded.locations[i]._embedded.theatre.location.addressLine1}</p>
          <p>${responseJson._embedded.locations[i]._embedded.theatre.location.city}, ${responseJson._embedded.locations[i]._embedded.theatre.location.state} ${responseJson._embedded.locations[i]._embedded.theatre.location.postalCode}</p>`)
         };
-        // $('#results').removeClass('hidden');
-    };
-
-
-
 // on click of theater name, theater ID is logged
-$('.theater-names').on('click', function(event) {
-    let x= document.getElementsByClassName('.data')
-    console.log(x)
-})
+    $('.theater-names').on('click', function(event) {
+        let id = event.currentTarget.value
+        console.log(id)
+    })
+//theater ID is input in amcShowtimes URL along with date
+    
+
+//today's date
+let today = new Date();
+let dd = String(today.getDate()).padStart(2, '0');
+let mm = String(today.getMonth() + 1).padStart(2, '0'); 
+let yyyy = today.getFullYear();
+today = mm + '-' + dd + '-' + yyyy;
+
+document.getElementsByClassName('.today').value = today;
+console.log(today)
+
 
 
   //on click of theater name, display movies playing at that theater
@@ -124,11 +131,3 @@ function watchForm() {
 // var tomorrow = new Date();
 // tomorrow.setDate(tomorrow.getDate() + 1);
 
-//today's date
-// let today = new Date();
-// let dd = String(today.getDate()).padStart(2, '0');
-// let mm = String(today.getMonth() + 1).padStart(2, '0'); 
-// let yyyy = today.getFullYear();
-// today = mm + '-' + dd + '-' + yyyy;
-
-// document.getElementsByClassName('.today').value = today;
