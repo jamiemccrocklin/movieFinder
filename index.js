@@ -13,9 +13,28 @@ const options = {
       "X-AMC-Vendor-Key": amcApiKey})
   };
 
+//tomorrow's date
+let tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+
+//today's date
+let today = new Date();
+let dd = String(today.getDate()).padStart(2, '0');
+let mm = String(today.getMonth() + 1).padStart(2, '0'); 
+let yyyy = today.getFullYear();
+today = mm + '-' + dd + '-' + yyyy;
+
+
+
+
 // const for selected theater id
 // const for selected data
 // const for movie ID
+
+
+
+
+
 
 
 function formatQueryParams(params) {
@@ -50,6 +69,38 @@ function getSuggestions() {
             })
     });
 }
+// let value = document.querySelector('.tomorrow');
+
+//     value.addEventListener('click', event => {
+//         console.log('tomorrow was clicked')
+//     });
+
+
+// let submitAnswer = $('.submitDate').val();
+// console.log(submitAnswer)
+
+//on selection of 'submit', date is logged and sent to displayTheaterResults function
+$(document).on('submit', '.date', function(event) {
+    event.preventDefault();
+    // let submit = event.currentTarget.value
+    // console.log(submit)
+
+    // let calendar = document.getElementsByClassName("calendar").selected
+    // console.log(calendar)
+    // let tomorrow = document.getElementsByClassName("tomorrow").selected
+    // console.log(tomorrow)
+    if ($('input').is('.calendar')) {
+        let date= document.querySelector('input[type="date"]').value;
+        console.log(date)
+    }
+    else if ($('input').is('.tomorrow')) {
+        console.log(tomorrow)
+    }
+    else if ($('input').is('.today')) {
+        console.log(today)
+    }
+})
+
 
 //display available theaters 
 function displayTheaterResults(responseJson) {
@@ -68,18 +119,10 @@ function displayTheaterResults(responseJson) {
         let id = event.currentTarget.value
         console.log(id)
     })
-//theater ID is input in amcShowtimes URL along with date
-    
+//theater ID is input in amcShowtimes URL along with date   
 
-//today's date
-let today = new Date();
-let dd = String(today.getDate()).padStart(2, '0');
-let mm = String(today.getMonth() + 1).padStart(2, '0'); 
-let yyyy = today.getFullYear();
-today = mm + '-' + dd + '-' + yyyy;
+};
 
-document.getElementsByClassName('.today').value = today;
-console.log(today)
 
 
 
@@ -127,7 +170,5 @@ function watchForm() {
 // })
 
 
-//tomorrow's date
-// var tomorrow = new Date();
-// tomorrow.setDate(tomorrow.getDate() + 1);
+
 
