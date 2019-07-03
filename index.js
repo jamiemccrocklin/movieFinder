@@ -80,26 +80,52 @@ function getSuggestions() {
 // console.log(submitAnswer)
 
 //on selection of 'submit', date is logged and sent to displayTheaterResults function
-$(document).on('submit', '.date', function(event) {
-    event.preventDefault();
-    // let submit = event.currentTarget.value
-    // console.log(submit)
+// function dateInput() {
+//     $('form.date').submit(event => {
+//       event.preventDefault();
+//       let inputToday = $('.today').val();
+//       let inputTomorrow = $('.tomorrow').val(tomorrow);
+//       let inputDate = document.querySelector('input[type="date"]').value;
+//       console.log(inputToday)
+//       console.log(inputTomorrow)
+//       console.log(inputDate)
+//     });
+//   }
+// $(dateInput())
 
-    // let calendar = document.getElementsByClassName("calendar").selected
-    // console.log(calendar)
-    // let tomorrow = document.getElementsByClassName("tomorrow").selected
-    // console.log(tomorrow)
 
-    if ($('.calendar input[type=date]').click()) {
-        let date= document.querySelector('input[type="date"]').value;
-        console.log(date)
-    }
-    else if ($('.tomorrow input[type="button"]').click()) {
-        console.log(tomorrow)
-        }
-    else if ($('.today input[type="button"]').click()) {
-        console.log(today)
-    }
+
+
+
+
+// $(document).on('submit', '.date', function(event) {
+//     event.preventDefault();
+//     // let submit = event.currentTarget.value
+//     // console.log(submit)
+
+//     // let calendar = document.getElementsByClassName("calendar").selected
+//     // console.log(calendar)
+//     // let tomorrow = document.getElementsByClassName("tomorrow").selected
+//     // console.log(tomorrow)
+//     function watchForm() {
+//         $('form.zipCode').submit(event => {
+//           event.preventDefault();
+//           const inputZip = $('.js-zip').val();
+//           getSuggestions(inputZip);
+    
+//         });
+//       }
+
+    // if ($('.calendar input[type=date]').click()) {
+    //     let date= document.querySelector('input[type="date"]').value;
+    //     console.log(date)
+    // }
+    // else if ($('.tomorrow input[type="button"]').click()) {
+    //     console.log(tomorrow)
+    //     }
+    // else if ($('.today input[type="button"]').click()) {
+    //     console.log(today)
+    // }
     // if ($('input').is('.calendar')) {
     //     let date= document.querySelector('input[type="date"]').value;
     //     console.log(date)
@@ -110,7 +136,7 @@ $(document).on('submit', '.date', function(event) {
     // else if ($('input').is('.today')) {
     //     console.log(today)
     // }
-})
+// })
 
 
 //display available theaters 
@@ -183,3 +209,11 @@ function watchForm() {
 
 
 
+function check() {
+    if (document.getElementsByClassName('calendar').checked) {
+        document.getElementsByClassName('reveal-if-active').style.display = 'block';
+    } 
+    else {
+        document.getElementsByClassName('reveal-if-active').style.display = 'none';
+    }
+}
