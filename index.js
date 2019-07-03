@@ -193,9 +193,8 @@ function watchForm() {
       event.preventDefault();
       const inputZip = $('.js-zip').val();
       getSuggestions(inputZip);
-
     });
-  }
+}
   
   $(watchForm);
 
@@ -208,12 +207,43 @@ function watchForm() {
 
 
 
+//reveals date input option
+$('.calendar').on('click', function () {
+    $('.reveal-if-active').css({ display: 'block'})
+    $('.reveal-if-active').prop('required',true)
+})
 
-function check() {
-    if (document.getElementsByClassName('calendar').checked) {
-        document.getElementsByClassName('reveal-if-active').style.display = 'block';
-    } 
-    else {
-        document.getElementsByClassName('reveal-if-active').style.display = 'none';
+$('.tomorrow').on('click', function () {
+    $('.reveal-if-active').css({ display: 'none'})
+    $('.reveal-if-active').prop('required',false)
+})
+
+$('.today').on('click', function () {
+    $('.reveal-if-active').css({ display: 'none'})
+    $('.reveal-if-active').prop('required',false)
+})
+
+
+
+
+
+
+  
+$('form.date').submit(event => {
+    event.preventDefault()
+    if ($('input:checked').val() === 'Today') {
+        let value = $('input:checked').val(today)
+        let newVal = document.querySelector('input[class=today]').value
+        console.log(newVal)
     }
-}
+    else if ($('input:checked').val() === 'Tomorrow') {
+        let value = $('input:checked').val(tomorrow)
+        let newVal = document.querySelector('input[class=tomorrow]').value
+        console.log(newVal)
+    }
+    else if ($('input:checked').val() === 'Other') {
+        let value = $('input:checked').val('input[id=which-date]')
+        let newVal = document.querySelector('input[id=which-date]').value
+        console.log(newVal)
+    }
+})

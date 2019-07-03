@@ -13,14 +13,14 @@
         <h1>Find theaters, movies, showtimes, reviews, and trailers all in one place.</h1>
         <h2>When are you visiting the theater?</h2>
         <form class="date">
-            <input class="today" name="radio-button" type="radio" value="Today">
+            <input checked="checked"class="today" name="radio-button" type="radio" value="Today">
             <label for="today">Today</label>
             <input class="tomorrow" type="radio" name="radio-button" value="Tomorrow">
             <label for="tomorrow">Tomorrow</label>
-            <input class="calendar" name="radio-button" type="radio" onclick="javascript:check();">
+            <input class="calendar" name="radio-button" type="radio" value="Other">
             <label for="calendar">A different day</label>
-            <label for ="which-date" class="reveal-if-active" style="display:none">Select a date:</label>
-            <input id="which-date" class="reveal-if-active" type="date" style="display:none"></input>
+            <label for ="which-date" class="reveal-if-active">Select a date:</label>
+            <input id="which-date" class="reveal-if-active" type="date"></input>
             <input class="submitDate" type="submit" value="Find movies!">
         </form>
     </section>
