@@ -89,16 +89,27 @@ $(document).on('submit', '.date', function(event) {
     // console.log(calendar)
     // let tomorrow = document.getElementsByClassName("tomorrow").selected
     // console.log(tomorrow)
-    if ($('input').is('.calendar')) {
+
+    if ($('.calendar input[type=date]').click()) {
         let date= document.querySelector('input[type="date"]').value;
         console.log(date)
     }
-    else if ($('input').is('.tomorrow')) {
+    else if ($('.tomorrow input[type="button"]').click()) {
         console.log(tomorrow)
-    }
-    else if ($('input').is('.today')) {
+        }
+    else if ($('.today input[type="button"]').click()) {
         console.log(today)
     }
+    // if ($('input').is('.calendar')) {
+    //     let date= document.querySelector('input[type="date"]').value;
+    //     console.log(date)
+    // }
+    // else if ($('input').is('.tomorrow')) {
+    //     console.log(tomorrow)
+    // }
+    // else if ($('input').is('.today')) {
+    //     console.log(today)
+    // }
 })
 
 
