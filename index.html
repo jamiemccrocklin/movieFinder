@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Finder</title>
     <link rel="stylesheet" href="index.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    </script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> -->
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+    <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
 </head>
 <body>
     <section class="landingPg">
@@ -19,8 +22,8 @@
             <label for="tomorrow">Tomorrow</label>
             <input class="calendar" name="radio-button" type="radio" value="Other">
             <label for="calendar">A different day</label>
-            <label for ="which-date" class="reveal-if-active">Select a date:</label>
-            <input id="which-date" class="reveal-if-active" type="date"></input>
+            <label for ="reveal-if-active" class="reveal-if-active">Select a date</label> 
+            <input type = "text" class="reveal-if-active" id = "datepicker">
             <input class="submitDate" type="submit" value="Find movies!">
         </form>
     </section>

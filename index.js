@@ -14,8 +14,11 @@ const options = {
   };
 
 //tomorrow's date
-let tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
+let tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+let day = String(tomorrow.getDate()).padStart(2, '0')
+let month = String(tomorrow.getMonth() + 1).padStart(2, '0')
+let year = tomorrow.getFullYear()
+tomorrow = ( month + "-" + day + "-" + year)
 
 //today's date
 let today = new Date();
@@ -23,17 +26,6 @@ let dd = String(today.getDate()).padStart(2, '0');
 let mm = String(today.getMonth() + 1).padStart(2, '0'); 
 let yyyy = today.getFullYear();
 today = mm + '-' + dd + '-' + yyyy;
-
-
-
-
-// const for selected theater id
-// const for selected data
-// const for movie ID
-
-
-
-
 
 
 
@@ -69,74 +61,12 @@ function getSuggestions() {
             })
     });
 }
-// let value = document.querySelector('.tomorrow');
-
-//     value.addEventListener('click', event => {
-//         console.log('tomorrow was clicked')
-//     });
 
 
 // let submitAnswer = $('.submitDate').val();
 // console.log(submitAnswer)
 
-//on selection of 'submit', date is logged and sent to displayTheaterResults function
-// function dateInput() {
-//     $('form.date').submit(event => {
-//       event.preventDefault();
-//       let inputToday = $('.today').val();
-//       let inputTomorrow = $('.tomorrow').val(tomorrow);
-//       let inputDate = document.querySelector('input[type="date"]').value;
-//       console.log(inputToday)
-//       console.log(inputTomorrow)
-//       console.log(inputDate)
-//     });
-//   }
-// $(dateInput())
 
-
-
-
-
-
-// $(document).on('submit', '.date', function(event) {
-//     event.preventDefault();
-//     // let submit = event.currentTarget.value
-//     // console.log(submit)
-
-//     // let calendar = document.getElementsByClassName("calendar").selected
-//     // console.log(calendar)
-//     // let tomorrow = document.getElementsByClassName("tomorrow").selected
-//     // console.log(tomorrow)
-//     function watchForm() {
-//         $('form.zipCode').submit(event => {
-//           event.preventDefault();
-//           const inputZip = $('.js-zip').val();
-//           getSuggestions(inputZip);
-    
-//         });
-//       }
-
-    // if ($('.calendar input[type=date]').click()) {
-    //     let date= document.querySelector('input[type="date"]').value;
-    //     console.log(date)
-    // }
-    // else if ($('.tomorrow input[type="button"]').click()) {
-    //     console.log(tomorrow)
-    //     }
-    // else if ($('.today input[type="button"]').click()) {
-    //     console.log(today)
-    // }
-    // if ($('input').is('.calendar')) {
-    //     let date= document.querySelector('input[type="date"]').value;
-    //     console.log(date)
-    // }
-    // else if ($('input').is('.tomorrow')) {
-    //     console.log(tomorrow)
-    // }
-    // else if ($('input').is('.today')) {
-    //     console.log(today)
-    // }
-// })
 
 
 //display available theaters 
@@ -226,9 +156,7 @@ $('.today').on('click', function () {
 
 
 
-
-
-  
+//logs input date to console
 $('form.date').submit(event => {
     event.preventDefault()
     if ($('input:checked').val() === 'Today') {
@@ -242,8 +170,16 @@ $('form.date').submit(event => {
         console.log(newVal)
     }
     else if ($('input:checked').val() === 'Other') {
-        let value = $('input:checked').val('input[id=which-date]')
-        let newVal = document.querySelector('input[id=which-date]').value
+        let value = $('input:checked').val('input[id=datepicker]')
+        let newVal = document.querySelector('input[id=datepicker]').value
         console.log(newVal)
     }
 })
+
+$(function datePicker() {
+    $("#datepicker").datepicker( {
+        dateFormat: 'mm-dd-yy',
+        minDate: 0
+    });
+ });
+    
