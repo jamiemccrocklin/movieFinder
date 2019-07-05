@@ -65,33 +65,36 @@ function getSuggestions() {
 
 // let submitAnswer = $('.submitDate').val();
 // console.log(submitAnswer)
-
+$(getDate)
 //logs input date to console
-$(function logDate() {
-    $('form.date').submit(event => {
-        event.preventDefault()  
+function getDate() {
+    let newVal;
         if ($('input:checked').val() === 'Today') {
-            let value = $('input:checked').val(today)
-            let newVal = document.querySelector('input[class=today]').value
+            value = $('input:checked').val(today)
+            newVal = document.querySelector('input[class=today]').value
             console.log(newVal)
         }
         else if ($('input:checked').val() === 'Tomorrow') {
-            let value = $('input:checked').val(tomorrow)
-            let newVal = document.querySelector('input[class=tomorrow]').value
+            value = $('input:checked').val(tomorrow)
+            newVal = document.querySelector('input[class=tomorrow]').value
             console.log(newVal)
         }
         else if ($('input:checked').val() === 'Other') {
-            let value = $('input:checked').val('input[id=datepicker]')
-            let newVal = document.querySelector('input[id=datepicker]').value
+            value = $('input:checked').val('input[id=datepicker]')
+            newVal = document.querySelector('input[id=datepicker]').value
             console.log(newVal)
         }
-    })
-})
+    return {
+        newVal
+    }
+    
+}
 
 
 
 //display available theaters 
-function displayTheaterResults(responseJson, date, newVal) {
+function displayTheaterResults(responseJson, newVal) {
+    const newValue = getDate().value
     $('.theaterResults').empty();
     for (let i = 0; i < responseJson._embedded.locations.length; i++){
       $('.theaterResults').append( 
@@ -108,7 +111,7 @@ function displayTheaterResults(responseJson, date, newVal) {
         console.log(id)
     })
 //theater ID is input in amcShowtimes URL along with date
-
+        console.log(newValue)
     
 };
 
@@ -149,7 +152,7 @@ function watchForm() {
 }
   
   $(watchForm);
-
+  $(getDate);
 
 //removes landingPg page, removes hidden class on zipPg
 // $('.submitDate').on('click', function() {
