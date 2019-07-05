@@ -66,11 +66,32 @@ function getSuggestions() {
 // let submitAnswer = $('.submitDate').val();
 // console.log(submitAnswer)
 
+//logs input date to console
+$(function logDate() {
+    $('form.date').submit(event => {
+        event.preventDefault()  
+        if ($('input:checked').val() === 'Today') {
+            let value = $('input:checked').val(today)
+            let newVal = document.querySelector('input[class=today]').value
+            console.log(newVal)
+        }
+        else if ($('input:checked').val() === 'Tomorrow') {
+            let value = $('input:checked').val(tomorrow)
+            let newVal = document.querySelector('input[class=tomorrow]').value
+            console.log(newVal)
+        }
+        else if ($('input:checked').val() === 'Other') {
+            let value = $('input:checked').val('input[id=datepicker]')
+            let newVal = document.querySelector('input[id=datepicker]').value
+            console.log(newVal)
+        }
+    })
+})
 
 
 
 //display available theaters 
-function displayTheaterResults(responseJson) {
+function displayTheaterResults(responseJson, date, newVal) {
     $('.theaterResults').empty();
     for (let i = 0; i < responseJson._embedded.locations.length; i++){
       $('.theaterResults').append( 
@@ -86,8 +107,9 @@ function displayTheaterResults(responseJson) {
         let id = event.currentTarget.value
         console.log(id)
     })
-//theater ID is input in amcShowtimes URL along with date   
+//theater ID is input in amcShowtimes URL along with date
 
+    
 };
 
 
@@ -156,25 +178,8 @@ $('.today').on('click', function () {
 
 
 
-//logs input date to console
-$('form.date').submit(event => {
-    event.preventDefault()
-    if ($('input:checked').val() === 'Today') {
-        let value = $('input:checked').val(today)
-        let newVal = document.querySelector('input[class=today]').value
-        console.log(newVal)
-    }
-    else if ($('input:checked').val() === 'Tomorrow') {
-        let value = $('input:checked').val(tomorrow)
-        let newVal = document.querySelector('input[class=tomorrow]').value
-        console.log(newVal)
-    }
-    else if ($('input:checked').val() === 'Other') {
-        let value = $('input:checked').val('input[id=datepicker]')
-        let newVal = document.querySelector('input[id=datepicker]').value
-        console.log(newVal)
-    }
-})
+
+
 
 $(function datePicker() {
     $("#datepicker").datepicker( {
@@ -183,3 +188,4 @@ $(function datePicker() {
     });
  });
     
+
