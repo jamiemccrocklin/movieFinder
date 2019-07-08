@@ -6,7 +6,6 @@ const amcBaseURL = 'https://cors-anywhere.herokuapp.com/https://api.amctheatres.
 // ex https://api.amctheatres.com/v2/location-suggestions/?query=40206
 // _embedded.suggestions.https://api.amctheatres.com/rels/v2/locations.href = link to query (with lat/long) which pulls up theaters
 // const amcShowtimes = '/v2/theatres/{theatreNumber}/showtimes/{date}';
-// https://api.amctheatres.com/v2/theatres/4266/showtimes/6-30-2019
 // const amcMovies = '/v2/movies/{id}';
 const options = {
     headers: new Headers({
@@ -14,19 +13,27 @@ const options = {
   };
 
 //tomorrow's date
+function getTomorrow() {
 let tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 let day = String(tomorrow.getDate()).padStart(2, '0')
 let month = String(tomorrow.getMonth() + 1).padStart(2, '0')
 let year = tomorrow.getFullYear()
 tomorrow = ( month + "-" + day + "-" + year)
 
+return tomorrow
+
+}
+
 //today's date
+function getToday() {
 let today = new Date();
 let dd = String(today.getDate()).padStart(2, '0');
 let mm = String(today.getMonth() + 1).padStart(2, '0'); 
 let yyyy = today.getFullYear();
 today = mm + '-' + dd + '-' + yyyy;
 
+return today
+}
 
 
 function formatQueryParams(params) {
@@ -65,36 +72,49 @@ function getSuggestions() {
 
 // let submitAnswer = $('.submitDate').val();
 // console.log(submitAnswer)
-$(getDate)
+
 //logs input date to console
-function getDate() {
-    let newVal;
-        if ($('input:checked').val() === 'Today') {
-            value = $('input:checked').val(today)
-            newVal = document.querySelector('input[class=today]').value
-            console.log(newVal)
-        }
-        else if ($('input:checked').val() === 'Tomorrow') {
-            value = $('input:checked').val(tomorrow)
-            newVal = document.querySelector('input[class=tomorrow]').value
-            console.log(newVal)
-        }
-        else if ($('input:checked').val() === 'Other') {
-            value = $('input:checked').val('input[id=datepicker]')
-            newVal = document.querySelector('input[id=datepicker]').value
-            console.log(newVal)
-        }
-    return {
-        newVal
-    }
+// function getDate() {
+//     let newVal;
+//         if ($('input:checked').val() === 'Today') {
+//             value = $('input:checked').val(today)
+//             newVal = document.querySelector('input[class=today]').value
+//             console.log(newVal)
+//         }
+//         else if ($('input:checked').val() === 'Tomorrow') {
+//             value = $('input:checked').val(tomorrow)
+//             newVal = document.querySelector('input[class=tomorrow]').value
+//             console.log(newVal)
+//         }
+//         else if ($('input:checked').val() === 'Other') {
+//             value = $('input:checked').val('input[id=datepicker]')
+//             newVal = document.querySelector('input[id=datepicker]').value
+//             console.log(newVal)
+//         }
+//     return {
+//         newVal
+//     }
     
+// }
+
+function getDate() {
+    if ($('input:checked').val() === 'Today') {
+        return getToday();
+    } 
+    else if ($('input:checked').val() === 'Tomorrow') {
+        return getTomorrow();
+    } 
+    else {
+        return document.querySelector('input[id=datepicker]').value 
+    }
 }
 
 
 
 //display available theaters 
-function displayTheaterResults(responseJson, newVal) {
-    const newValue = getDate().value
+function displayTheaterResults(responseJson) {
+    const date = getDate()
+    console.log(date)
     $('.theaterResults').empty();
     for (let i = 0; i < responseJson._embedded.locations.length; i++){
       $('.theaterResults').append( 
@@ -109,13 +129,30 @@ function displayTheaterResults(responseJson, newVal) {
     $('.theater-names').on('click', function(event) {
         let id = event.currentTarget.value
         console.log(id)
+        let showtimesUrl = amcBaseURL + '/v2/theatres/' + id + '/showtimes/' + date
+        let msg = showtimes(showtimesUrl)
+        showtimes(showtimesUrl)
     })
 //theater ID is input in amcShowtimes URL along with date
-        console.log(newValue)
-    
+    function showtimes(showtimesUrl) {
+        console.log(showtimesUrl)
+        fetch (showtimesUrl, options) 
+                .then(response => response.json())
+                .then(responseJson => {
+                    displayShowtimeResults(responseJson)
+                })
+    }
 };
 
-
+// movies playing at selected theater appear
+function displayShowtimeResults(responseJson) {
+    $('.showtimes-results').empty();
+    for (let i = 0; i < responseJson._embedded.showtimes.length; i++){
+        $('.showtimes-results').append( 
+        `<li class="movie-name">${responseJson._embedded.showtimes[i].movieName}</li>
+        <img alt="movie image icon" src="${responseJson._embedded.showtimes[i].media.posterDynamic}">`  
+        )}
+}
 
 
   //on click of theater name, display movies playing at that theater
@@ -152,13 +189,13 @@ function watchForm() {
 }
   
   $(watchForm);
-  $(getDate);
+ 
 
 //removes landingPg page, removes hidden class on zipPg
-// $('.submitDate').on('click', function() {
-//     event.preventDefault();
-//     $('.landingPg').remove();
-// })
+$('.submitDate').on('click', function() {
+    event.preventDefault();
+    // $('.landingPg').remove();
+})
 
 
 

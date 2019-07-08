@@ -1,0 +1,12 @@
+input[type=button]:checked {
+    background-color: red;
+}
+
+
+.reveal-if-active {
+    display:none;
+}
+
+img {
+    height: 200px;
+}
