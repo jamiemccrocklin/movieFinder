@@ -133,16 +133,44 @@ function displayTheaterResults(responseJson) {
         let msg = showtimes(showtimesUrl)
         showtimes(showtimesUrl)
     })
+
 //theater ID is input in amcShowtimes URL along with date
     function showtimes(showtimesUrl) {
-        console.log(showtimesUrl)
         fetch (showtimesUrl, options) 
                 .then(response => response.json())
                 .then(responseJson => {
-                    displayShowtimeResults(responseJson)
+                    // console.log(responseJson)
+                    // displayShowtimeResults(responseJson)
+                    parseMovies(responseJson)
                 })
     }
 };
+
+//parse through data to find duplicate movie names and combine into one 
+function parseMovies(responseJson) {
+    // let notDuplicate = []
+    let entries = Object.entries(responseJson._embedded.showtimes)
+    console.log(entries)
+    let result = [];
+
+    entries.forEach(function (entry) {
+        if (!this[entry.movieName]) {
+            this[entry.movieName] = { movieName: entry.movieName};
+            result.push(this[entry.movieName]);
+        }
+        
+    }, Object.create(null));
+    
+    console.log(result);
+    // for (let i = 0; i < responseJson._embedded.showtimes[i].length; i++) {
+    //     if (responseJson._embedded.showtimes[i].movieName === responseJson._embedded.showtimes[++i].movieName) {
+    //         console.log('this is running')
+    //     }
+    // }
+    // displayShowtimeResults(responseJson)
+}
+
+
 
 // movies playing at selected theater appear
 function displayShowtimeResults(responseJson) {
