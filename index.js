@@ -153,7 +153,20 @@ function parseMovies(responseJson) {
     
     for (let i = 0; i < responseJson._embedded.showtimes.length; i++){
         let copy = Object.assign({}, responseJson._embedded.showtimes[i]);
-        console.log(copy)
+        // console.log(copy)
+        let movieNames = Object.values(copy)[4]
+        console.log(movieNames)
+        let results = []
+        for (let i = 0; i < movieNames.length; i++){
+            if (movieNames[i + 1] == movieNames[i]) {
+                results.push(movieNames[i]);
+            }
+        }
+            console.log(results);
+        // let newArray = copy.map(() => {
+        //     if (copy.movieName[i] === copy.movieName[++i])
+        //     console.log(newArray)
+        // })
     }
 }
 
