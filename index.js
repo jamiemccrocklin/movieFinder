@@ -148,11 +148,11 @@ function displayTheaterResults(responseJson) {
 
 //parse through data to find duplicate movie names and combine into one 
 function parseMovies(responseJson) {
-    // let showtimesArray = Object.assign({}, responseJson._embedded.showtimes)
+    // let showtimesArray = Object.assign({}, responseJson._embedded.showtimes[0])
     // console.log(showtimesArray)
     
     for (let i = 0; i < responseJson._embedded.showtimes.length; i++){
-        let copy = Object.assign({ movieName: responseJson._embedded.showtimes[i].movieName }, responseJson._embedded.showtimes);
+        let copy = Object.assign({}, responseJson._embedded.showtimes[i]);
         console.log(copy)
     }
 }
