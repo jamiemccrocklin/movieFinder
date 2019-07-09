@@ -139,7 +139,7 @@ function displayTheaterResults(responseJson) {
         fetch (showtimesUrl, options) 
                 .then(response => response.json())
                 .then(responseJson => {
-                    // console.log(responseJson)
+                    console.log(responseJson)
                     // displayShowtimeResults(responseJson)
                     parseMovies(responseJson)
                 })
@@ -148,20 +148,20 @@ function displayTheaterResults(responseJson) {
 
 //parse through data to find duplicate movie names and combine into one 
 function parseMovies(responseJson) {
-    // let showtimesArray = Object.assign({}, responseJson._embedded.showtimes[0])
-    // console.log(showtimesArray)
+    let showtimesArray = Object.assign({}, responseJson._embedded.showtimes[0])
+    console.log(showtimesArray)
     
     for (let i = 0; i < responseJson._embedded.showtimes.length; i++){
         let copy = Object.assign({}, responseJson._embedded.showtimes[i]);
         let movieNames = Object.values(copy)[4]
         console.log(movieNames)
         let results = []
-        for (let i = 0; i < movieNames.length; i++){
-            if (movieNames[i + 1] === movieNames[i]) {
-                results.push(movieNames[i]);
-            }
-        }
-        console.log(results);
+        // for (let i = 0; i < movieNames.length; i++){
+        //     if (movieNames[i + 1] === movieNames[i]) {
+        //         results.push(movieNames[i]);
+        //     }
+        // }
+        // console.log(results);
         // let newArray = copy.map(() => {
         //     if (copy.movieName[i] === copy.movieName[++i])
         //     console.log(newArray)
