@@ -148,26 +148,13 @@ function displayTheaterResults(responseJson) {
 
 //parse through data to find duplicate movie names and combine into one 
 function parseMovies(responseJson) {
-    // let notDuplicate = []
-    let entries = Object.entries(responseJson._embedded.showtimes)
-    console.log(entries)
-    let result = [];
-
-    entries.forEach(function (entry) {
-        if (!this[entry.movieName]) {
-            this[entry.movieName] = { movieName: entry.movieName};
-            result.push(this[entry.movieName]);
-        }
-        
-    }, Object.create(null));
+    let showtimesArray = Object.assign({}, responseJson._embedded.showtimes)
+    console.log(showtimesArray)
     
-    console.log(result);
-    // for (let i = 0; i < responseJson._embedded.showtimes[i].length; i++) {
-    //     if (responseJson._embedded.showtimes[i].movieName === responseJson._embedded.showtimes[++i].movieName) {
-    //         console.log('this is running')
-    //     }
-    // }
-    // displayShowtimeResults(responseJson)
+    for (let i = 0; i < showtimesArray.length; i++){
+        let copy = Object.assign({}, { movieName: showtimesArray[0].movieName }, showtimesArray);
+        console.log(copy)
+    }
 }
 
 
