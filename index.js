@@ -149,19 +149,29 @@ function displayTheaterResults(responseJson) {
 //parse through data to find duplicate movie names and combine into one 
 function parseMovies(responseJson) {
     let showtimesArray = Object.assign({}, responseJson._embedded.showtimes[0])
-    console.log(showtimesArray)
+    // console.log(showtimesArray)
 
 //lists all showtimes with duplicate movie titles
     const showtimes = responseJson._embedded.showtimes;
-    let results = showtimes.filter((showtime, index, array) => {
+    let duplicates = showtimes.filter((showtime, index, array) => {
         const allOccurences = array.filter(st => showtime.movieName === st.movieName);
         return allOccurences.length > 1;
     })
-    console.log(results)
+    console.log(duplicates)
+
+//lists all unique showtimes 
+    const show = responseJson._embedded.showtimes;
+    let unique = show.filter((showtime, index, array) => {
+        const noDup = array.filter(st => showtime.movieName === st.movieName);
+        return noDup.length == 1;
+        
+    })
+    // displayShowtimeResults(unique)
+    console.log(unique)
 
 //displays movies with duplicates as an object with arrays of objects inside
     let duplicatesByName = {};
-    results.forEach(showtime => {
+    duplicates.forEach(showtime => {
         if (!duplicatesByName[showtime.movieName]) {
             duplicatesByName[showtime.movieName] = [showtime];
         }
@@ -169,22 +179,14 @@ function parseMovies(responseJson) {
             duplicatesByName[showtime.movieName].push(showtime);
         }
     })
+    // displayDuplicateShowtimeResults(duplicatesByName)
     console.log(duplicatesByName)
+    console.log(duplicatesByName[0])
     // console.log(JSON.stringify(duplicatesByName))
-
-    const show = responseJson._embedded.showtimes;
-    let result = show.filter((showtime, index, array) => {
-        const noDup = array.filter(st => showtime.movieName === st.movieName);
-        return noDup.length == 1;
-    })
-    console.log(result)
 
 
     // let unique = showtimes.filter((v, i, a) => a.indexOf(v) === i);
     // console.log(unique)
-
-
-
 
     }
 
@@ -192,14 +194,27 @@ function parseMovies(responseJson) {
 
 
 // movies playing at selected theater appear
-function displayShowtimeResults(responseJson) {
-    $('.showtimes-results').empty();
-    for (let i = 0; i < responseJson._embedded.showtimes.length; i++){
-        $('.showtimes-results').append( 
-        `<li class="movie-name">${responseJson._embedded.showtimes[i].movieName}</li>
-        <img alt="movie image icon" src="${responseJson._embedded.showtimes[i].media.posterDynamic}">`  
-        )}
-}
+// function displayShowtimeResults(unique) {
+//     $('.theaterPg').remove()
+//     $('.showtimes-results').empty();
+//     for (let i = 0; i < unique.length; i++){
+//         $('.showtimes-results').append( 
+//         `<li class="movie-name">${unique[i].movieName}</li>
+//         <img alt="movie image icon" src="${unique[i].media.posterDynamic}">`  
+//         )}
+//     displayDuplicateShowtimeResults(duplicatesByName)
+// }
+
+// function displayDuplicateShowtimeResults(duplicatesByName) {
+//     $('.theaterPg').remove()
+//     $('.showtimes-results').empty();
+//     for (let i = 0; i < duplicatesByName.length; i++){
+//         $('.showtimes-results').append( 
+//         `
+//         <li class="movie-name">${duplicatesByName[i].movieName}</li>
+//         <img alt="movie image icon" src="${duplicatesByName[i].media.posterDynamic}">`  
+//         )}
+// }
 
 
   //on click of theater name, display movies playing at that theater
