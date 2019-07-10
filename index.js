@@ -150,24 +150,44 @@ function displayTheaterResults(responseJson) {
 function parseMovies(responseJson) {
     let showtimesArray = Object.assign({}, responseJson._embedded.showtimes[0])
     console.log(showtimesArray)
-    
-    for (let i = 0; i < responseJson._embedded.showtimes.length; i++){
-        let copy = Object.assign({}, responseJson._embedded.showtimes[i]);
-        let movieNames = Object.values(copy)[4]
-        console.log(movieNames)
-        let results = []
-        // for (let i = 0; i < movieNames.length; i++){
-        //     if (movieNames[i + 1] === movieNames[i]) {
-        //         results.push(movieNames[i]);
-        //     }
-        // }
-        // console.log(results);
-        // let newArray = copy.map(() => {
-        //     if (copy.movieName[i] === copy.movieName[++i])
-        //     console.log(newArray)
-        // })
+
+//lists all showtimes with duplicate movie titles
+    const showtimes = responseJson._embedded.showtimes;
+    let results = showtimes.filter((showtime, index, array) => {
+        const allOccurences = array.filter(st => showtime.movieName === st.movieName);
+        return allOccurences.length > 1;
+    })
+    console.log(results)
+
+//displays movies with duplicates as an object with arrays of objects inside
+    let duplicatesByName = {};
+    results.forEach(showtime => {
+        if (!duplicatesByName[showtime.movieName]) {
+            duplicatesByName[showtime.movieName] = [showtime];
+        }
+        else {
+            duplicatesByName[showtime.movieName].push(showtime);
+        }
+    })
+    console.log(duplicatesByName)
+    // console.log(JSON.stringify(duplicatesByName))
+
+    const show = responseJson._embedded.showtimes;
+    let result = show.filter((showtime, index, array) => {
+        const noDup = array.filter(st => showtime.movieName === st.movieName);
+        return noDup.length == 1;
+    })
+    console.log(result)
+
+
+    // let unique = showtimes.filter((v, i, a) => a.indexOf(v) === i);
+    // console.log(unique)
+
+
+
+
     }
-}
+
 
 
 
