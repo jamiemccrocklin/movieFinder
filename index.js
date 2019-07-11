@@ -148,73 +148,123 @@ function displayTheaterResults(responseJson) {
 
 //parse through data to find duplicate movie names and combine into one 
 function parseMovies(responseJson) {
-    let showtimesArray = Object.assign({}, responseJson._embedded.showtimes[0])
+    // let showtimesArray = Object.assign({}, responseJson._embedded.showtimes[0])
     // console.log(showtimesArray)
 
 //lists all showtimes with duplicate movie titles
-    const showtimes = responseJson._embedded.showtimes;
-    let duplicates = showtimes.filter((showtime, index, array) => {
-        const allOccurences = array.filter(st => showtime.movieName === st.movieName);
-        return allOccurences.length > 1;
-    })
-    console.log(duplicates)
+    // const showtimes = responseJson._embedded.showtimes;
+    // let duplicates = showtimes.filter((showtime, index, array) => {
+    //     const allOccurences = array.filter(st => showtime.movieName === st.movieName);
+    //     return allOccurences.length > 1;
+    // })
+    // console.log(duplicates)
 
 //lists all unique showtimes 
-    const show = responseJson._embedded.showtimes;
-    let unique = show.filter((showtime, index, array) => {
-        const noDup = array.filter(st => showtime.movieName === st.movieName);
-        return noDup.length == 1;
+    // const show = responseJson._embedded.showtimes;
+    // let unique = show.filter((showtime, index, array) => {
+    //     const noDup = array.filter(st => showtime.movieName === st.movieName);
+    //     return noDup.length == 1;
         
-    })
+    // })
     // displayShowtimeResults(unique)
-    console.log(unique)
-
-//displays movies with duplicates as an object with arrays of objects inside
-    let duplicatesByName = {};
-    duplicates.forEach(showtime => {
-        if (!duplicatesByName[showtime.movieName]) {
-            duplicatesByName[showtime.movieName] = [showtime];
-        }
-        else {
-            duplicatesByName[showtime.movieName].push(showtime);
-        }
-    })
-    // displayDuplicateShowtimeResults(duplicatesByName)
-    console.log(duplicatesByName)
-    console.log(duplicatesByName[0])
-    // console.log(JSON.stringify(duplicatesByName))
-
-
-    // let unique = showtimes.filter((v, i, a) => a.indexOf(v) === i);
     // console.log(unique)
 
+//displays movies with duplicates as an object with arrays of objects inside
+    // let duplicatesByName = {};
+    // duplicates.forEach(showtime => {
+    //     if (!duplicatesByName[showtime.movieName]) {
+    //         duplicatesByName[showtime.movieName] = [showtime];
+    //     }
+    //     else {
+    //         duplicatesByName[showtime.movieName].push(showtime);
+    //     }
+    // })
+    // displayDuplicateShowtimeResults(duplicatesByName)
+    
+    // console.log(JSON.stringify(duplicatesByName))
+
+    const showtimes = responseJson._embedded.showtimes;
+    console.log(showtimes)
+    let myMovies = [];
+    showtimes.forEach(movieName => {
+        return myMovies.push(movieName);
+    })
+    // console.log('myMovies')
+    // console.log(myMovies)
+    // console.log('times')
+    // console.log(myMovies[0].showDateTimeLocal)
+
+// https://stackoverflow.com/questions/40663776/how-to-combine-json-object-with-same-key-and-add-their-other-corresponding-value
+
+// function combine(arr) {
+//     var combined = arr.reduce(function(result, item) {
+//     var current = result[item.movieName];
+  
+//       result[item.movieName] = !current ? item : {
+//         movieName: item.movieName,
+//         showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+//         posterURL: current.movieUrl,
+//       };
+
+  
+//       return result;
+//     }, {});
+  
+//     return Object.keys(combined).map(function(key) {
+//       return combined[key];
+//     });
+//   }
+
+//     var result = combine(myMovies);
+//     console.log(result);
+//     // displayShowtimeResults(result)
+//     }
+
+function combine(arr) {
+    var combined = arr.reduce(function(result, item) {
+    var current = result[item.movieName];
+  
+      if (result[item.movieName]) {
+        return !current
+      } 
+      else { 
+        return {
+        movieName: item.movieName,
+        showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+        posterURL: current.movieUrl,
+        }
+    };
+      
+  
+      return result;
+    }, {});
+  
+    return Object.keys(combined).map(function(key) {
+      return combined[key];
+    });
+  }
+
+    var result = combine(myMovies);
+    console.log(result);
+    // displayShowtimeResults(result)
     }
 
 
 
 
+
+
 // movies playing at selected theater appear
-// function displayShowtimeResults(unique) {
+// function displayShowtimeResults(result) {
 //     $('.theaterPg').remove()
 //     $('.showtimes-results').empty();
-//     for (let i = 0; i < unique.length; i++){
+//     for (let i = 0; i < result.length; i++){
 //         $('.showtimes-results').append( 
-//         `<li class="movie-name">${unique[i].movieName}</li>
-//         <img alt="movie image icon" src="${unique[i].media.posterDynamic}">`  
+//         `<li class="movie-name">${result[i].movieName}</li>`
+//         // <img alt="movie image icon" src="${result[i].media.posterDynamic}"> 
 //         )}
-//     displayDuplicateShowtimeResults(duplicatesByName)
 // }
 
-// function displayDuplicateShowtimeResults(duplicatesByName) {
-//     $('.theaterPg').remove()
-//     $('.showtimes-results').empty();
-//     for (let i = 0; i < duplicatesByName.length; i++){
-//         $('.showtimes-results').append( 
-//         `
-//         <li class="movie-name">${duplicatesByName[i].movieName}</li>
-//         <img alt="movie image icon" src="${duplicatesByName[i].media.posterDynamic}">`  
-//         )}
-// }
 
 
   //on click of theater name, display movies playing at that theater
