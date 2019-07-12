@@ -196,45 +196,18 @@ function parseMovies(responseJson) {
 
 // https://stackoverflow.com/questions/40663776/how-to-combine-json-object-with-same-key-and-add-their-other-corresponding-value
 
-// function combine(arr) {
-//     var combined = arr.reduce(function(result, item) {
-//     var current = result[item.movieName];
-  
-//       result[item.movieName] = !current ? item : {
-//         movieName: item.movieName,
-//         showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
-//         posterURL: current.movieUrl,
-//       };
-
-  
-//       return result;
-//     }, {});
-  
-//     return Object.keys(combined).map(function(key) {
-//       return combined[key];
-//     });
-//   }
-
-//     var result = combine(myMovies);
-//     console.log(result);
-//     // displayShowtimeResults(result)
-//     }
-
 function combine(arr) {
     var combined = arr.reduce(function(result, item) {
-    var current = result[item.movieName];
+    var current = result.find((element)=>{return element.hasOwnProperty('movieName') && element.movieName === item.movieName;});
+    console.log(current)
   
-    if (result[item.movieName] = !current) {
-        return item
-      } 
-    else {let newObj = { 
+      result[item.movieName] = !current ? item : {
         movieName: item.movieName,
         showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
-        posterURL: current.movieUrl,
-    }
-    return newObj;
-    }   
+        posterURL: item.movieUrl,
+      };
 
+  
       return result;
     }, {});
   
@@ -247,6 +220,35 @@ function combine(arr) {
     console.log(result);
     // displayShowtimeResults(result)
     }
+
+
+//   function combine(arr) {
+//     var combined = arr.reduce(function(result, item) {
+//     var current = result[item.movieName];
+  
+//       if (result[item.movieName] = !current) return {
+//         movieName: item.movieName,
+//         // showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+//         // posterURL: current.movieUrl,
+//       };
+//       else return {
+//       movieName: item.movieName,
+//       showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+//       posterURL: current.movieUrl,
+//     }
+  
+//       return result;
+//     }, {});
+  
+//     return Object.keys(combined).map(function(key) {
+//       return combined[key];
+//     });
+//   }
+
+//     var result = combine(myMovies);
+//     console.log(result);
+//     // displayShowtimeResults(result)
+//     }  
 
 
 
