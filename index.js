@@ -196,46 +196,16 @@ function parseMovies(responseJson) {
 
 // https://stackoverflow.com/questions/40663776/how-to-combine-json-object-with-same-key-and-add-their-other-corresponding-value
 
-function combine(arr) {
-    var combined = arr.reduce(function(result, item) {
-    var current = result.find((element)=>{return element.hasOwnProperty('movieName') && element.movieName === item.movieName;});
-    console.log(current)
-  
-      result[item.movieName] = !current ? item : {
-        movieName: item.movieName,
-        showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
-        posterURL: item.movieUrl,
-      };
-
-  
-      return result;
-    }, {});
-  
-    return Object.keys(combined).map(function(key) {
-      return combined[key];
-    });
-  }
-
-    var result = combine(myMovies);
-    console.log(result);
-    // displayShowtimeResults(result)
-    }
-
-
-//   function combine(arr) {
+// function combine(arr) {
 //     var combined = arr.reduce(function(result, item) {
 //     var current = result[item.movieName];
   
-//       if (result[item.movieName] = !current) return {
+//       result[item.movieName] = !current ? item : {
 //         movieName: item.movieName,
-//         // showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
-//         // posterURL: current.movieUrl,
+//         showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+//         posterURL: item.movieUrl,
 //       };
-//       else return {
-//       movieName: item.movieName,
-//       showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
-//       posterURL: current.movieUrl,
-//     }
+
   
 //       return result;
 //     }, {});
@@ -248,7 +218,43 @@ function combine(arr) {
 //     var result = combine(myMovies);
 //     console.log(result);
 //     // displayShowtimeResults(result)
-//     }  
+//     }
+
+
+  function combine(arr) {
+    var combined = arr.reduce(function(result, item) {
+    var current = result.find((element)=>{return element.hasOwnProperty('movieName') && element.movieName === item.movieName;});
+    if (current == undefined) {
+        let newObj={
+        movieName: item.movieName,
+        showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+        posterURL: current.movieUrl,
+        }
+        result.push(newObj)
+    }
+    // else if (result[item.movieName] = !current) return {
+    //     movieName: item.movieName,
+    //     showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+    //     posterURL: current.movieUrl,
+    //   };
+    // else if {
+    //   movieName: item.movieName,
+    //   showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+    //   posterURL: current.movieUrl,
+    // }
+  
+      return result;
+    }, {});
+  
+    return Object.keys(combined).map(function(key) {
+      return combined[key];
+    });
+  }
+
+    var result = combine(myMovies);
+    console.log(result);
+    // displayShowtimeResults(result)
+    }  
 
 
 
