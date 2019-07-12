@@ -223,31 +223,30 @@ function parseMovies(responseJson) {
 
   function combine(arr) {
     var combined = arr.reduce(function(result, item) {
-    var current = result.find((element)=>{return element.hasOwnProperty('movieName') && element.movieName === item.movieName;});
-    if (current == undefined) {
+    if(!result.hasOwnProperty('items')){result.item = [];}
+    var current = result.item.find((element)=>{return element.hasOwnProperty('movieName') && element.movieName === item.movieName;});
+    if (!current) {
         let newObj={
         movieName: item.movieName,
-        showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
-        posterURL: current.movieUrl,
+        showtime:  item.showDateTimeLocal,
+        posterURL: item.movieUrl,
         }
-        result.push(newObj)
+        result.item.append(newObj)
     }
-    // else if (result[item.movieName] = !current) return {
-    //     movieName: item.movieName,
-    //     showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
-    //     posterURL: current.movieUrl,
-    //   };
-    // else if {
-    //   movieName: item.movieName,
-    //   showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
-    //   posterURL: current.movieUrl,
-    // }
+    else {
+        let otherObj = {
+        movieName: item.movieName,
+        showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+        posterURL: item.movieUrl,
+        }
+        result.append(otherObj)
+    }
   
-      return result;
+    return result;
     }, {});
   
     return Object.keys(combined).map(function(key) {
-      return combined[key];
+    return combined[key];
     });
   }
 
