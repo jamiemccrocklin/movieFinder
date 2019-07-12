@@ -224,18 +224,17 @@ function combine(arr) {
     var combined = arr.reduce(function(result, item) {
     var current = result[item.movieName];
   
-      if (result[item.movieName]) {
-        return !current
+    if (result[item.movieName] = !current) {
+        return item
       } 
-      else { 
-        return {
+    else {let newObj = { 
         movieName: item.movieName,
         showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
         posterURL: current.movieUrl,
-        }
-    };
-      
-  
+    }
+    return newObj;
+    }   
+
       return result;
     }, {});
   
