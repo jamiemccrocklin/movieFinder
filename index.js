@@ -196,87 +196,40 @@ function parseMovies(responseJson) {
 
 // https://stackoverflow.com/questions/40663776/how-to-combine-json-object-with-same-key-and-add-their-other-corresponding-value
 
-// function combine(arr) {
-//     var combined = arr.reduce(function(result, item) {
-//     var current = result[item.movieName];
-//     console.log(current)
-  
-//       result[item.movieName] = !current ? item : {
-//         movieName: item.movieName,
-//         showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
-//         posterURL: item.movieUrl,
-//       };
-
-  
-//       return result;
-//     }, {});
-  
-//     return Object.keys(combined).map(function(key) {
-//       return combined[key];
-//     });
-//   }
-
-//     var result = combine(myMovies);
-//     console.log(result);
-//     // displayShowtimeResults(result)
-//     }
-
-
-
-//function that the technical coacher was doing
-  function combine(arr) {
+function combine(arr) {
     var combined = arr.reduce(function(result, item) {
-    if(!result.hasOwnProperty('item')){result.item = [];}
-    var current = result.item.find((element)=>{return element.hasOwnProperty('movieName') && element.movieName === item.movieName;});
-    console.log(current)
-    if (!current) {
-        let newObj={
+    var current = result[item.movieName];
+      result[item.movieName] = !current ? item : {
         movieName: item.movieName,
-        showtime:  item.showDateTimeLocal,
-        posterURL: item.movieUrl,
-        }
-        result.item.push(newObj)
-        console.log(newObj)
-    }
-    else {
-        let otherObj = {
-        movieName: item.movieName,
-        showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
-        posterURL: item.movieUrl,
-        }
-        // result.items[currentIdx] = otherObj;
-        result.item.push(otherObj)
-        console.log(otherObj)
-    }
+        showDateTimeLocal: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+        posterDynamic: item.media.posterDynamic,
+      };
+
   
-    return result;
+      return result;
     }, {});
   
     return Object.keys(combined).map(function(key) {
-    return combined[key];
+      return combined[key];
     });
   }
 
     var result = combine(myMovies);
     console.log(result);
-    // displayShowtimeResults(result)
-    }  
-
-
-
-
+    displayShowtimeResults(result)
+    }
 
 
 // movies playing at selected theater appear
-// function displayShowtimeResults(result) {
-//     $('.theaterPg').remove()
-//     $('.showtimes-results').empty();
-//     for (let i = 0; i < result.length; i++){
-//         $('.showtimes-results').append( 
-//         `<li class="movie-name">${result[i].movieName}</li>`
-//         // <img alt="movie image icon" src="${result[i].media.posterDynamic}"> 
-//         )}
-// }
+function displayShowtimeResults(result) {
+    $('.theaterPg').remove()
+    $('.showtimes-results').empty();
+    for (let i = 0; i < result.length; i++){
+        $('.showtimes-results').append( 
+        `<li class="movie-name">${result[i].movieName}</li>
+        <img alt="movie image icon" src="${result[i].posterDynamic || result[i].media.posterDynamic}">`
+        )}
+}
 
 
 
