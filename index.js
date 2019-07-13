@@ -199,6 +199,7 @@ function parseMovies(responseJson) {
 // function combine(arr) {
 //     var combined = arr.reduce(function(result, item) {
 //     var current = result[item.movieName];
+//     console.log(current)
   
 //       result[item.movieName] = !current ? item : {
 //         movieName: item.movieName,
@@ -221,17 +222,21 @@ function parseMovies(responseJson) {
 //     }
 
 
+
+//function that the technical coacher was doing
   function combine(arr) {
     var combined = arr.reduce(function(result, item) {
-    if(!result.hasOwnProperty('items')){result.item = [];}
+    if(!result.hasOwnProperty('item')){result.item = [];}
     var current = result.item.find((element)=>{return element.hasOwnProperty('movieName') && element.movieName === item.movieName;});
+    console.log(current)
     if (!current) {
         let newObj={
         movieName: item.movieName,
         showtime:  item.showDateTimeLocal,
         posterURL: item.movieUrl,
         }
-        result.item.append(newObj)
+        result.item.push(newObj)
+        console.log(newObj)
     }
     else {
         let otherObj = {
@@ -239,7 +244,9 @@ function parseMovies(responseJson) {
         showtime: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
         posterURL: item.movieUrl,
         }
-        result.append(otherObj)
+        // result.items[currentIdx] = otherObj;
+        result.item.push(otherObj)
+        console.log(otherObj)
     }
   
     return result;
