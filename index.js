@@ -118,7 +118,7 @@ function displayTheaterResults(responseJson) {
     $('.theaterResults').empty();
     for (let i = 0; i < responseJson._embedded.locations.length; i++){
       $('.theaterResults').append( 
-        `<li class="theater-names" value=${responseJson._embedded.locations[i]._embedded.theatre.id}>${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
+        `<li class="theater-names" value="${responseJson._embedded.locations[i]._embedded.theatre.id}">${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
          <li class="theater-id">${responseJson._embedded.locations[i]._embedded.theatre.id}</li>
          <img alt="theater image icon" src="${responseJson._embedded.locations[i]._embedded.theatre.media.theatreImageIcon}">
          <p>Distance:${responseJson._embedded.locations[i].distance}miles</p>
@@ -128,7 +128,6 @@ function displayTheaterResults(responseJson) {
 // on click of theater name, theater ID is logged
     $('.theater-names').on('click', function(event) {
         let id = event.currentTarget.value
-        console.log(id)
         let showtimesUrl = amcBaseURL + '/v2/theatres/' + id + '/showtimes/' + date
         let msg = showtimes(showtimesUrl)
         showtimes(showtimesUrl)
@@ -148,53 +147,13 @@ function displayTheaterResults(responseJson) {
 
 //parse through data to find duplicate movie names and combine into one 
 function parseMovies(responseJson) {
-    // let showtimesArray = Object.assign({}, responseJson._embedded.showtimes[0])
-    // console.log(showtimesArray)
-
-//lists all showtimes with duplicate movie titles
-    // const showtimes = responseJson._embedded.showtimes;
-    // let duplicates = showtimes.filter((showtime, index, array) => {
-    //     const allOccurences = array.filter(st => showtime.movieName === st.movieName);
-    //     return allOccurences.length > 1;
-    // })
-    // console.log(duplicates)
-
-//lists all unique showtimes 
-    // const show = responseJson._embedded.showtimes;
-    // let unique = show.filter((showtime, index, array) => {
-    //     const noDup = array.filter(st => showtime.movieName === st.movieName);
-    //     return noDup.length == 1;
-        
-    // })
-    // displayShowtimeResults(unique)
-    // console.log(unique)
-
-//displays movies with duplicates as an object with arrays of objects inside
-    // let duplicatesByName = {};
-    // duplicates.forEach(showtime => {
-    //     if (!duplicatesByName[showtime.movieName]) {
-    //         duplicatesByName[showtime.movieName] = [showtime];
-    //     }
-    //     else {
-    //         duplicatesByName[showtime.movieName].push(showtime);
-    //     }
-    // })
-    // displayDuplicateShowtimeResults(duplicatesByName)
-    
-    // console.log(JSON.stringify(duplicatesByName))
-
     const showtimes = responseJson._embedded.showtimes;
     console.log(showtimes)
     let myMovies = [];
     showtimes.forEach(movieName => {
         return myMovies.push(movieName);
     })
-    // console.log('myMovies')
-    // console.log(myMovies)
-    // console.log('times')
-    // console.log(myMovies[0].showDateTimeLocal)
 
-// https://stackoverflow.com/questions/40663776/how-to-combine-json-object-with-same-key-and-add-their-other-corresponding-value
 
 function combine(arr) {
     var combined = arr.reduce(function(result, item) {
@@ -217,21 +176,73 @@ function combine(arr) {
     var result = combine(myMovies);
     console.log(result);
     displayShowtimeResults(result)
-    }
+}
 
 
 // movies playing at selected theater appear
 function displayShowtimeResults(result) {
     $('.theaterPg').remove()
     $('.showtimes-results').empty();
+    $('.showtimes-results').append( 
+    `<h2>Movies playing at selected theater:</h2>`)
     for (let i = 0; i < result.length; i++){
         $('.showtimes-results').append( 
-        `<li class="movie-name">${result[i].movieName}</li>
-        <img alt="movie image icon" src="${result[i].posterDynamic || result[i].media.posterDynamic}">`
-        )}
+        
+        // <li class= "movie-name">${result[i].movieName}</li>
+        `<div class="poster-container">
+            <img class="trigger" title="${result[i].movieName}" alt="movie image icon" src="${result[i].posterDynamic || result[i].media.posterDynamic}">   
+        </div>
+        <div class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h1>Hello, I am a modal!</h1>
+        </div>
+        </div>`)
+    }
+ 
+    // on click of posterDynamic, movie-name value is displayed on console
+    // $('.trigger').on('click', function() {
+    //     let selectedTitle = event.currentTarget.title
+    //     console.log(selectedTitle)
+    //     });  
+  
+    // showShowtimes()
+
+$('.trigger').on('click', function() {
+    console.log('trigger is running')
+    var newTrigger = event.currentTarget;
+    toggleThings(newTrigger)
+})
+
+function toggleThings(newTrigger) {
+    console.log('toggleThings is running')
+    console.log(newTrigger)
+    var modal = document.querySelector(".modal");
+    var closeButton = document.querySelector(".close-button");
+
+    function toggleModal() {
+        modal.classList.toggle("show-modal");
+    }
+
+    function windowOnClick(event) {
+        if (event.target === modal) {
+            toggleModal();
+        }
+    }
+
+    newTrigger.addEventListener("click", toggleModal);
+    closeButton.addEventListener("click", toggleModal);
+    window.addEventListener("click", windowOnClick);
+
+}
 }
 
 
+
+//on click of posterDynamic, show showtimes
+// function showShowtimes() {
+//     $('.')
+// }
 
   //on click of theater name, display movies playing at that theater
 // function showMovies(theaterName) {
