@@ -119,14 +119,15 @@ function displayTheaterResults(responseJson) {
     for (let i = 0; i < responseJson._embedded.locations.length; i++){
       $('.theaterResults').append( 
         `<li class="theater-names" value="${responseJson._embedded.locations[i]._embedded.theatre.id}">${responseJson._embedded.locations[i]._embedded.theatre.longName}</li>
-         <li class="theater-id">${responseJson._embedded.locations[i]._embedded.theatre.id}</li>
-         <img alt="theater image icon" src="${responseJson._embedded.locations[i]._embedded.theatre.media.theatreImageIcon}">
          <p>Distance:${responseJson._embedded.locations[i].distance}miles</p>
          <p>Address: ${responseJson._embedded.locations[i]._embedded.theatre.location.addressLine1}</p>
          <p>${responseJson._embedded.locations[i]._embedded.theatre.location.city}, ${responseJson._embedded.locations[i]._embedded.theatre.location.state} ${responseJson._embedded.locations[i]._embedded.theatre.location.postalCode}</p>`)
         };
 // on click of theater name, theater ID is logged
     $('.theater-names').on('click', function(event) {
+        $('html,body').animate({
+            scrollTop: $('.showtimesPg').offset().top},
+            'slow');
         let id = event.currentTarget.value
         let showtimesUrl = amcBaseURL + '/v2/theatres/' + id + '/showtimes/' + date
         let msg = showtimes(showtimesUrl)
@@ -187,56 +188,56 @@ function displayShowtimeResults(result) {
     `<h2>Movies playing at selected theater:</h2>`)
     for (let i = 0; i < result.length; i++){
         $('.showtimes-results').append( 
-        
         // <li class= "movie-name">${result[i].movieName}</li>
         `<div class="poster-container">
-            <img class="trigger" title="${result[i].movieName}" alt="movie image icon" src="${result[i].posterDynamic || result[i].media.posterDynamic}">   
+            <img class="trigger" title="${result[i].movieName}" alt="movie image icon" src="${result[i].posterDynamic || result[i].media.posterDynamic}"> 
         </div>
         <div class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h1>Hello, I am a modal!</h1>
+            <h1>Movie Name Here</h1>
+            <img src="${result[i].posterDynamic || result[i].media.posterDynamic}">
         </div>
-        </div>`)
-    }
- 
-    // on click of posterDynamic, movie-name value is displayed on console
-    // $('.trigger').on('click', function() {
-    //     let selectedTitle = event.currentTarget.title
-    //     console.log(selectedTitle)
-    //     });  
-  
-    // showShowtimes()
-
-$('.trigger').on('click', function() {
-    console.log('trigger is running')
-    var newTrigger = event.currentTarget;
-    toggleThings(newTrigger)
-})
-
-function toggleThings(newTrigger) {
-    console.log('toggleThings is running')
-    console.log(newTrigger)
-    var modal = document.querySelector(".modal");
-    var closeButton = document.querySelector(".close-button");
-
-    function toggleModal() {
-        modal.classList.toggle("show-modal");
-    }
-
-    function windowOnClick(event) {
-        if (event.target === modal) {
-            toggleModal();
+        </div>` 
+    )}
+    $('.trigger').on('click', function() {
+        console.log('trigger is running')
+        var newTrigger = event.currentTarget;
+        toggleThings(newTrigger)
+    })
+    
+    function toggleThings(newTrigger) {
+        console.log('toggleThings is running')
+        var modal = document.querySelector(".modal");
+        var closeButton = document.querySelector(".close-button");
+    
+        function showModal() {
+            // $('.modal').css('visibility', 'visible');
+            modal.classList.add("show-modal");
         }
+
+        function closeModal() {
+            // $('.modal').css('visibility', 'hidden');
+            modal.classList.remove("show-modal");
+        }
+    
+        function windowOnClick(event) {
+            if (event.target === modal) {
+                toggleModal();
+            }
+        }
+    
+        newTrigger.addEventListener("click", showModal);
+        closeButton.addEventListener("click", closeModal);
+        window.addEventListener("click", windowOnClick);
+    
     }
-
-    newTrigger.addEventListener("click", toggleModal);
-    closeButton.addEventListener("click", toggleModal);
-    window.addEventListener("click", windowOnClick);
-
 }
-}
+ 
 
+// $(watchForEvent);
+// $(window).on('click', '.modal', function () { var modal = $(this); // etc })
+// function watchForEvent() {
 
 
 //on click of posterDynamic, show showtimes
@@ -278,7 +279,9 @@ function watchForm() {
 }
   
   $(watchForm);
- 
+
+//start at top of page upon refresh
+$("html, body").animate({ scrollTop: 0 }, "slow");
 
 //removes landingPg page, removes hidden class on zipPg
 $('.submitDate').on('click', function() {
@@ -316,5 +319,30 @@ $(function datePicker() {
         minDate: 0
     });
  });
-    
 
+ //scrolling effects   
+ $('.submitDate').click(function() {
+    $('html,body').animate({
+        scrollTop: $('.locationPg').offset().top},
+        'slow');
+});
+
+$('.submitZip').click(function() {
+    var elements = document.querySelectorAll('input');
+    var invalidListener = function(){ this.scrollIntoView(false); };
+
+    for(var i = elements.length; i--;)
+    elements[i].addEventListener('invalid', invalidListener);
+
+    $('html,body').animate({
+        scrollTop: $('.theaterPg').offset().top},
+        'slow');
+});
+
+
+
+// $('.submitZip').click(function() {
+//     $('html,body').animate({
+//         scrollTop: $('.theaterPg').offset().top},
+//         'slow');
+// });
