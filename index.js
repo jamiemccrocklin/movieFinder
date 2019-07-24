@@ -181,57 +181,54 @@ function combine(arr) {
 
 
 // movies playing at selected theater appear
-function displayShowtimeResults(result) {
+//var imgSrc;
+getImgSrc();
+closeModal();
+
+// movies playing at selected theater appear
+function displayShowtimeResults(result, imgSrc) {
     $('.theaterPg').remove()
     $('.showtimes-results').empty();
     $('.showtimes-results').append( 
     `<h2>Movies playing at selected theater:</h2>`)
     for (let i = 0; i < result.length; i++){
         $('.showtimes-results').append( 
-        // <li class= "movie-name">${result[i].movieName}</li>
         `<div class="poster-container">
             <img class="trigger" title="${result[i].movieName}" alt="movie image icon" src="${result[i].posterDynamic || result[i].media.posterDynamic}"> 
         </div>
         <div class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h1>Movie Name Here</h1>
-            <img src="${result[i].posterDynamic || result[i].media.posterDynamic}">
+            <h1>${result[i].movieName}</h1>
+            <img class="modal-image" src="${result[i].posterDynamic || result[i].media.posterDynamic}">
+            <h2>Showtimes: ${result[i].showDateTimeLocal}</h2>
         </div>
         </div>` 
-    )}
-    $('.trigger').on('click', function() {
-        console.log('trigger is running')
-        var newTrigger = event.currentTarget;
-        toggleThings(newTrigger)
+    )}     
+}
+ 
+function getImgSrc() {
+  console.log('called');
+    $('.showtimes-results').on('click', '.poster-container', function() {
+      console.log('hi, the poster container was clicked')
+        let clickedElement = $(this);
+        console.log(clickedElement)
+        toggleThings(clickedElement)
     })
-    
-    function toggleThings(newTrigger) {
-        console.log('toggleThings is running')
-        var modal = document.querySelector(".modal");
-        var closeButton = document.querySelector(".close-button");
-    
-        function showModal() {
-            // $('.modal').css('visibility', 'visible');
-            modal.classList.add("show-modal");
-        }
-
-        function closeModal() {
-            // $('.modal').css('visibility', 'hidden');
-            modal.classList.remove("show-modal");
-        }
-    
-        function windowOnClick(event) {
-            if (event.target === modal) {
-                toggleModal();
-            }
-        }
-    
-        newTrigger.addEventListener("click", showModal);
-        closeButton.addEventListener("click", closeModal);
-        window.addEventListener("click", windowOnClick);
-    
     }
+    
+function toggleThings(clickedElement) {
+  console.log($(clickedElement))
+    var $modal = $(clickedElement).next('.modal')
+    var $closeButton = $modal.find('.close-button');
+
+    $modal.addClass('show-modal');
+}
+
+function closeModal() {
+  $('.showtimes-results').on('click', '.close-button', function() {
+    $('.showtimes-results .modal').removeClass('show-modal')
+  });
 }
  
 
