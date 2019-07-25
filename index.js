@@ -2,11 +2,8 @@
 
 const amcApiKey = '451EB6B4-E2FD-412E-AF07-CA640853CDC3'; 
 const amcBaseURL = 'https://cors-anywhere.herokuapp.com/https://api.amctheatres.com';
-// const amcTheatersSuggestions = '/v2/location-suggestions/?query=40206';
-// ex https://api.amctheatres.com/v2/location-suggestions/?query=40206
-// _embedded.suggestions.https://api.amctheatres.com/rels/v2/locations.href = link to query (with lat/long) which pulls up theaters
-// const amcShowtimes = '/v2/theatres/{theatreNumber}/showtimes/{date}';
-// const amcMovies = '/v2/movies/{id}';
+const omdbBaseURL = 'https://www.omdbapi.com/?apikey=cec2abca&t=';
+
 const options = {
     headers: new Headers({
       "X-AMC-Vendor-Key": amcApiKey})
@@ -21,7 +18,6 @@ let year = tomorrow.getFullYear()
 tomorrow = ( month + "-" + day + "-" + year)
 
 return tomorrow
-
 }
 
 //today's date
@@ -40,10 +36,9 @@ function formatQueryParams(params) {
     const queryItems = Object.keys(params)
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
     return queryItems.join('&');
-  }
+}
 
 //GET data from location-suggestions and embedded URL 
-
 function getSuggestions() {
     const inputZip = $('.js-zip').val();
     const params = {
@@ -68,34 +63,6 @@ function getSuggestions() {
             })
     });
 }
-
-
-// let submitAnswer = $('.submitDate').val();
-// console.log(submitAnswer)
-
-//logs input date to console
-// function getDate() {
-//     let newVal;
-//         if ($('input:checked').val() === 'Today') {
-//             value = $('input:checked').val(today)
-//             newVal = document.querySelector('input[class=today]').value
-//             console.log(newVal)
-//         }
-//         else if ($('input:checked').val() === 'Tomorrow') {
-//             value = $('input:checked').val(tomorrow)
-//             newVal = document.querySelector('input[class=tomorrow]').value
-//             console.log(newVal)
-//         }
-//         else if ($('input:checked').val() === 'Other') {
-//             value = $('input:checked').val('input[id=datepicker]')
-//             newVal = document.querySelector('input[id=datepicker]').value
-//             console.log(newVal)
-//         }
-//     return {
-//         newVal
-//     }
-    
-// }
 
 function getDate() {
     if ($('input:checked').val() === 'Today') {
@@ -161,10 +128,16 @@ function combine(arr) {
     var current = result[item.movieName];
       result[item.movieName] = !current ? item : {
         movieName: item.movieName,
-        showDateTimeLocal: current.showDateTimeLocal + ',' + item.showDateTimeLocal,
+        showDateTimeLocal: current.showDateTimeLocal + ', ' + item.showDateTimeLocal,
         posterDynamic: item.media.posterDynamic,
+        mpaaRating: item.mpaaRating,
+        runTime: item.runTime,
+        genre: item.genre,
       };
-
+    
+//need to format HH:MM & conditional - if same time, only display once
+    // let oldDate = Object.entries(showDateTimeLocal);
+    // console.log(oldDate)
   
       return result;
     }, {});
@@ -173,6 +146,8 @@ function combine(arr) {
       return combined[key];
     });
   }
+  
+    
 
     var result = combine(myMovies);
     console.log(result);
@@ -184,9 +159,12 @@ function combine(arr) {
 //var imgSrc;
 getImgSrc();
 closeModal();
+// getRatings();
+
+
 
 // movies playing at selected theater appear
-function displayShowtimeResults(result, imgSrc) {
+function displayShowtimeResults(result) {
     $('.theaterPg').remove()
     $('.showtimes-results').empty();
     $('.showtimes-results').append( 
@@ -204,25 +182,50 @@ function displayShowtimeResults(result, imgSrc) {
             <h2>Showtimes: ${result[i].showDateTimeLocal}</h2>
         </div>
         </div>` 
-    )}     
+    )}   
 }
  
 function getImgSrc() {
-  console.log('called');
     $('.showtimes-results').on('click', '.poster-container', function() {
-      console.log('hi, the poster container was clicked')
         let clickedElement = $(this);
-        console.log(clickedElement)
         toggleThings(clickedElement)
     })
-    }
+}
     
 function toggleThings(clickedElement) {
-  console.log($(clickedElement))
+//shows modal
     var $modal = $(clickedElement).next('.modal')
     var $closeButton = $modal.find('.close-button');
-
     $modal.addClass('show-modal');
+//grabs just the movie name of the selected poster title
+    let selectedMovieName = clickedElement.html();
+    console.log(selectedMovieName)
+    let movie = $(selectedMovieName).attr('title');
+    let formatMovieName = movie.split(' ').join('+');
+    let omdbRatingURL = omdbBaseURL + formatMovieName
+//fetches ratings from omdb API 
+    fetch(omdbRatingURL)
+        .then(response => response.json())
+        .then(responseJson => {
+            console.log(responseJson)
+            let imdb = responseJson.Ratings[0];
+            let imdbText = Object.values(imdb);
+            let rottenTomato = responseJson.Ratings[1];
+            let rottenTomatoText = Object.values(rottenTomato);
+            let metacritic = responseJson.Ratings[2];
+            let metacriticText = Object.values(metacritic);
+            console.log(imdb)
+            console.log(rottenTomato)
+            console.log(metacritic)
+            $('.modal-content').append(
+                `<h3>${responseJson.Plot}</h3>
+                <h3>${responseJson.Actors}</h3>
+                <h2>Ratings:</h2>
+                <h3>${imdbText[0]}: ${imdbText[1]}</h3>
+                <h3>${rottenTomatoText[0]}: ${rottenTomatoText[1]}</h3>
+                <h3>${metacriticText[0]}: ${metacriticText[1]}</h3>`
+            )
+        });    
 }
 
 function closeModal() {
@@ -230,23 +233,28 @@ function closeModal() {
     $('.showtimes-results .modal').removeClass('show-modal')
   });
 }
- 
-
-// $(watchForEvent);
-// $(window).on('click', '.modal', function () { var modal = $(this); // etc })
-// function watchForEvent() {
 
 
-//on click of posterDynamic, show showtimes
-// function showShowtimes() {
-//     $('.')
-// }
 
-  //on click of theater name, display movies playing at that theater
-// function showMovies(theaterName) {
+
+// function getRatings(omdbRatingURL) {
+//     $('.showtimes-results').on('click', '.poster-container', function() {
+//     fetch(omdbRatingURL)
+//         .then(response => response.json())
+//         .then(responseJson => {
+//             console.log(responseJson)
+//             let imdb = responseJson.Ratings[0];
+//             let rottenTomato = responseJson.Ratings[1];
+//             let metacritic = responseJson.Ratings[2];
+//             console.log(imdb)
+//             console.log(rottenTomato)
+//             console.log(metacritic)
+//             displayShowtimeResults(imdb, rottenTomato, metacritic)
+//         });
+//     })
     
-//     console.log(theaterName);
 // }
+
 
 
 //add this template to the above for an error message when ready
