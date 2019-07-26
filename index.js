@@ -3,6 +3,7 @@
 const amcApiKey = '451EB6B4-E2FD-412E-AF07-CA640853CDC3'; 
 const amcBaseURL = 'https://cors-anywhere.herokuapp.com/https://api.amctheatres.com';
 const omdbBaseURL = 'https://www.omdbapi.com/?apikey=cec2abca&t=';
+const youtubeBaseURL = 'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&key=AIzaSyDb7xCvGxu327fSkYk4Gxg-C5h-ems8n68&maxResults=1&q=';
 
 const options = {
     headers: new Headers({
@@ -225,7 +226,21 @@ function toggleThings(clickedElement) {
                 <h3>${rottenTomatoText[0]}: ${rottenTomatoText[1]}</h3>
                 <h3>${metacriticText[0]}: ${metacriticText[1]}</h3>`
             )
-        });    
+        }); 
+    let youtubeURL = youtubeBaseURL + formatMovieName + 'Official+Movie+Trailer'
+    console.log(youtubeURL)
+    fetch(youtubeURL)
+        .then(response => response.json())
+        .then(responseJson => {
+            console.log(responseJson)
+            let id = responseJson.items[0].id.videoId;
+            console.log(id)
+            $('.modal-content').append(
+                `<iframe src="https://www.youtube.com/embed/${id}"
+                width="560" height="315" frameborder="0" allowfullscreen>
+                </iframe>`
+            )
+        }); 
 }
 
 function closeModal() {
