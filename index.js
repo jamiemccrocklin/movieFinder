@@ -160,21 +160,21 @@ function combine(arr) {
 //var imgSrc;
 getImgSrc();
 closeModal();
-// getRatings();
 
 
 
 // movies playing at selected theater appear
 function displayShowtimeResults(result) {
-    $('.theaterPg').remove()
+    console.log('displayShowtimeResults running')
+    $('.theaterPg').remove();
+    $('.modal-content').empty();
     $('.showtimes-results').empty();
-    $('.showtimes-results').append( 
-    `<h2>Movies playing at selected theater:</h2>`)
     for (let i = 0; i < result.length; i++){
         $('.showtimes-results').append( 
         `<div class="poster-container">
             <img class="trigger" title="${result[i].movieName}" alt="movie image icon" src="${result[i].posterDynamic || result[i].media.posterDynamic}"> 
         </div>
+
         <div class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -194,6 +194,7 @@ function getImgSrc() {
 }
     
 function toggleThings(clickedElement) {
+    console.log('toggleThings running')
 //shows modal
     var $modal = $(clickedElement).next('.modal')
     var $closeButton = $modal.find('.close-button');
@@ -218,13 +219,19 @@ function toggleThings(clickedElement) {
             console.log(imdb)
             console.log(rottenTomato)
             console.log(metacritic)
+            $('.movie-info').empty();
             $('.modal-content').append(
-                `<h3>${responseJson.Plot}</h3>
-                <h3>${responseJson.Actors}</h3>
-                <h2>Ratings:</h2>
-                <h3>${imdbText[0]}: ${imdbText[1]}</h3>
-                <h3>${rottenTomatoText[0]}: ${rottenTomatoText[1]}</h3>
-                <h3>${metacriticText[0]}: ${metacriticText[1]}</h3>`
+                `<div class="movie-info">
+                <h3>${responseJson.Plot}</h3>
+                <h3>Actors: ${responseJson.Actors}</h3>
+                <ul>Ratings:</ul>
+                <img class="imdb icon" src="IMDB Icon.png" alt="IMDB icon">
+                <li class="rating"> ${imdbText[1]}</li>
+                <img class="rotten-tomato icon" src="Rotten Tomato Icon.png" alt="rotten tomato icon">
+                <li class="rating"> ${rottenTomatoText[1]}</li>
+                <img class="metacritic icon" src="Metacritic icon.png" alt="Metacritic icon"?
+                <li class="rating"> ${metacriticText[1]}</li>
+                </div>`
             )
         }); 
     let youtubeURL = youtubeBaseURL + formatMovieName + 'Official+Movie+Trailer'
@@ -235,10 +242,13 @@ function toggleThings(clickedElement) {
             console.log(responseJson)
             let id = responseJson.items[0].id.videoId;
             console.log(id)
+            $('.movie-container').empty();
             $('.modal-content').append(
-                `<iframe src="https://www.youtube.com/embed/${id}"
+                `<div class="movie-container">
+                <iframe src="https://www.youtube.com/embed/${id}"
                 width="560" height="315" frameborder="0" allowfullscreen>
-                </iframe>`
+                </iframe>
+                </div>`
             )
         }); 
 }
@@ -366,3 +376,4 @@ $('.submitZip').click(function() {
 //         scrollTop: $('.theaterPg').offset().top},
 //         'slow');
 // });
+
