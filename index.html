@@ -6,13 +6,14 @@
     <title>Movie Finder</title>
     <link rel="stylesheet" href="index.css">
     <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
     <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 </head>
 <body>
     <section class="landingPg">
-        <h1>Find theaters, movies, showtimes, reviews, and trailers all in one place.</h1>
+        <h1 class="landingPg-title">Find theaters, movies, showtimes, reviews, and trailers all in one place.</h1>
         <h2>When are you visiting the theater?</h2>
         <form class="date">
             <input checked="checked" class="today" name="radio-button" type="radio" value="Today">
@@ -21,7 +22,7 @@
             <label for="tomorrow">Tomorrow</label>
             <input class="calendar" name="radio-button" type="radio" value="Other">
             <label for="calendar">A different day</label>
-            <label for ="reveal-if-active" class="reveal-if-active">Select a date</label> 
+            <label for = "reveal-if-active" class="reveal-if-active">Select a date</label> 
             <input type = "text" class="reveal-if-active" id = "datepicker">
             <input class="submitDate" type="submit" value="Find movies!">
         </form>
@@ -34,10 +35,11 @@
         </form>
     </section>
     <section class="theaterPg">
-        <h2>Select a Theater Near You:</h2>
+        <h2 class="theaterPg-title">Select a Theater Near You:</h2>
         <ul class="theaterResults"></ul>
     </section>
     <section class="showtimesPg">
+        <h2 class="showtimes-title">Movies playing at: <span id="insert"></span></h2>
         <ul class="showtimes-results"></ul>
     </section>
     <script src="index.js"></script>

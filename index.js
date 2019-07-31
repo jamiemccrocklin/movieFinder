@@ -96,10 +96,15 @@ function displayTheaterResults(responseJson) {
         $('html,body').animate({
             scrollTop: $('.showtimesPg').offset().top},
             'slow');
+        let clickedTheater = $(this);
+        let clickedTheaterName = clickedTheater.html();
+        document.getElementById("insert").innerHTML = clickedTheaterName;
+        console.log(clickedTheaterName)
         let id = event.currentTarget.value
         let showtimesUrl = amcBaseURL + '/v2/theatres/' + id + '/showtimes/' + date
         let msg = showtimes(showtimesUrl)
         showtimes(showtimesUrl)
+        displayShowtimeResults(clickedTheaterName)
     })
 
 //theater ID is input in amcShowtimes URL along with date
@@ -108,7 +113,6 @@ function displayTheaterResults(responseJson) {
                 .then(response => response.json())
                 .then(responseJson => {
                     console.log(responseJson)
-                    // displayShowtimeResults(responseJson)
                     parseMovies(responseJson)
                 })
     }
@@ -166,7 +170,8 @@ closeModal();
 // movies playing at selected theater appear
 function displayShowtimeResults(result) {
     console.log('displayShowtimeResults running')
-    $('.theaterPg').remove();
+    // $('.showtimesPg').append( 
+    // `<h2 class="showtimes-title">Movies playing at ${clickedTheaterName}</h2>`)
     $('.modal-content').empty();
     $('.showtimes-results').empty();
     for (let i = 0; i < result.length; i++){
