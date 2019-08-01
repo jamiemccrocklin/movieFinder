@@ -102,6 +102,7 @@ function displayTheaterResults(responseJson) {
         console.log(clickedTheaterName)
         let id = event.currentTarget.value
         let showtimesUrl = amcBaseURL + '/v2/theatres/' + id + '/showtimes/' + date
+        console.log(showtimesUrl)
         let msg = showtimes(showtimesUrl)
         showtimes(showtimesUrl)
         displayShowtimeResults(clickedTheaterName)
@@ -170,11 +171,15 @@ closeModal();
 // movies playing at selected theater appear
 function displayShowtimeResults(result) {
     console.log('displayShowtimeResults running')
-    // $('.showtimesPg').append( 
-    // `<h2 class="showtimes-title">Movies playing at ${clickedTheaterName}</h2>`)
     $('.modal-content').empty();
     $('.showtimes-results').empty();
     for (let i = 0; i < result.length; i++){
+        let oldTime = $(result[i].showDateTimeLocal)
+        console.log(oldTime)
+        let oldTimeString = oldTime.selector
+        console.log(oldTimeString)
+        let newTime = oldTimeString.substr(11, 5);
+        console.log(newTime);
         $('.showtimes-results').append( 
         `<div class="poster-container">
             <img class="trigger" title="${result[i].movieName}" alt="movie image icon" src="${result[i].posterDynamic || result[i].media.posterDynamic}"> 
@@ -185,7 +190,7 @@ function displayShowtimeResults(result) {
             <span class="close-button">&times;</span>
             <h1>${result[i].movieName}</h1>
             <img class="modal-image" src="${result[i].posterDynamic || result[i].media.posterDynamic}">
-            <h2>Showtimes: ${result[i].showDateTimeLocal}</h2>
+            <h2 id="time">Showtimes: ${newTime}</h2>
         </div>
         </div>` 
     )}   
