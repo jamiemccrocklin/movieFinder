@@ -2,11 +2,11 @@
 
 html {
     box-sizing: border-box;
-    /* background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80') no-repeat center center fixed; 
+    background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80') no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; */
+    background-size: cover;
 }
 
 
@@ -193,6 +193,10 @@ img {
     margin-bottom: 20px;
 }
 
+.trigger:hover {
+    cursor: pointer;
+}
+
 .showtimes-title {
     margin-top: 200px;
     margin-bottom: 100px;
@@ -205,4 +209,19 @@ img {
 
 iframe {
     display: block;
+}
+
+.content {
+    background-color: rgba(255, 255, 255, 0.5);   
+}
+
+.landingPg .content {
+    padding: 50px;
+    height: 300px;
+}
+
+.locationPg .content {
+    padding: 50px;
+    padding-right: 100px;
+    padding-left: 100px;
 }
